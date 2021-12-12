@@ -12,9 +12,9 @@ import NonUniformRandomVariateGeneration.sampleCategorical
   for i = 1:numFields
     fieldName = fieldNames[i]
     fieldType = fieldTypes[i]
-    @assert !fieldType.mutable || hasmethod(copyto!, (fieldType,
+    @assert !ismutable(fieldType) || hasmethod(copyto!, (fieldType,
       fieldType)) "$fieldName::$fieldType : copyto! must exist for mutable Particle fields"
-    if fieldType.mutable
+    if ismutable(fieldType)
       @inbounds expressions[i] = :(copyto!(dest.$fieldName, src.$fieldName))
     else
       @inbounds expressions[i] = :(dest.$fieldName = src.$fieldName)
